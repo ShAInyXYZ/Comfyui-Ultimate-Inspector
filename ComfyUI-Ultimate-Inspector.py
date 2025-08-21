@@ -132,7 +132,7 @@ except ImportError:
     return env_info
 
 def get_full_pip_freeze(python_path, output_dir):
-    """Generate full pip freeze output and save to file"""
+    """Generate organized pip freeze output and save to file"""
     freeze_info = {}
     
     try:
@@ -140,15 +140,49 @@ def get_full_pip_freeze(python_path, output_dir):
                               capture_output=True, text=True, timeout=60)
         if result.returncode == 0:
             freeze_content = result.stdout
-            freeze_info['package_count'] = len([l for l in freeze_content.split('\n') if l.strip() and not l.startswith('#')])
             
-            # Save to file
+            # Parse and organize requirements
+            valid_requirements = []
+            invalid_requirements = []
+            
+            for line in freeze_content.split('\n'):
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                
+                # Check if it's a valid package==version format
+                if '==' in line and not line.startswith('git+') and not line.startswith('http'):
+                    # Basic validation - package name should be valid
+                    package_part = line.split('==')[0].strip()
+                    if package_part and package_part.replace('-', '').replace('_', '').replace('.', '').isalnum():
+                        valid_requirements.append(line)
+                    else:
+                        invalid_requirements.append(line)
+                else:
+                    invalid_requirements.append(line)
+            
+            # Sort valid requirements alphabetically
+            valid_requirements.sort(key=lambda x: x.lower())
+            
+            freeze_info['package_count'] = len(valid_requirements)
+            
+            # Save organized requirements to file
             freeze_file = Path(output_dir) / "pip_freeze.txt"
             with open(freeze_file, 'w', encoding='utf-8') as f:
-                f.write(f"# Full pip freeze output\n")
+                f.write(f"# Organized pip freeze output\n")
                 f.write(f"# Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-                f.write(f"# Python: {python_path}\n\n")
-                f.write(freeze_content)
+                f.write(f"# Python: {python_path}\n")
+                f.write(f"# Total valid packages: {len(valid_requirements)}\n\n")
+                
+                # Write valid requirements
+                for req in valid_requirements:
+                    f.write(f"{req}\n")
+                
+                # Add invalid/complex requirements as comments if any
+                if invalid_requirements:
+                    f.write(f"\n# Complex or invalid requirements (commented out):\n")
+                    for req in invalid_requirements:
+                        f.write(f"# {req}\n")
             
             freeze_info['file_path'] = str(freeze_file)
             freeze_info['success'] = True
@@ -1605,8 +1639,9 @@ def main():
     
     args = parser.parse_args()
     
-    # Create output directory
-    output_dir = Path(args.output_dir)
+    # Use the same directory as the markdown report for all outputs
+    output_file = Path(args.output)
+    output_dir = output_file.parent
     output_dir.mkdir(exist_ok=True)
     
     # Get root path
@@ -1669,10 +1704,14 @@ def main():
     print(f"[+] Executive Summary:")
     print(f"    {len(nodes)} custom nodes analyzed")
     print(f"    {nodes_with_issues} nodes with dependency issues")
-    print(f"    Additional files saved to: {output_dir}")
     
+    # Confirm pip_freeze.txt location
     if 'pip_freeze' in data.get('python', {}) and data['python']['pip_freeze'].get('success'):
-        print(f"    Full package list: {data['python']['pip_freeze']['file_path']}")
+        freeze_file_path = data['python']['pip_freeze']['file_path']
+        package_count = data['python']['pip_freeze']['package_count']
+        print(f"[+] Requirements file saved to: {freeze_file_path} ({package_count} packages)")
+    
+    print(f"[+] All output files saved to directory: {output_dir}")
 
 if __name__ == "__main__":
     main()
