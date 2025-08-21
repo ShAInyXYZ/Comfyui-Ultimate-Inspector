@@ -24,7 +24,7 @@ It generates a full markdown report to help with reproducibility, debugging, and
 ```
 ComfyUI_portable/                 # Root portable folder
 ├── ComfyUI/                      # Main ComfyUI application
-├── python_embeded/               # Main ComfyUI application
+├── python_embeded/               # Python Runtime
 └── ComfyUI-Ultimate-Inspector/   # Our repo
     └── ComfyUI-Ultimate-Inspector.py
 ```
@@ -35,11 +35,18 @@ Clone the repo to your **ComfyUI_portable** :
 
 ```bash
 git clone https://github.com/ShAlnyXYZ/ComfyUI-Ultimate-Inspector.git
-````
-Then Run from the same folder :
-````
+```
+## Usage
+Run the tool from the **ComfyUI_portable root directory** (one level above the `ComfyUI` folder).
+
+Option 1 – Python directly
+```
 python ComfyUI-Ultimate-Inspector/ComfyUI-Ultimate-Inspector.py --output report.md --verbose
-````
+```
+Option 2 – One-click batch file
+Run **Run_ComfyUI_Inspector.bat**
+
+This creates a timestamped subfolder under reports/ containing both the markdown report and the pip_freeze.txt requirements file.
 
 ## License
 
