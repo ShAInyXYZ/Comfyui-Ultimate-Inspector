@@ -132,57 +132,46 @@ except ImportError:
     return env_info
 
 def get_full_pip_freeze(python_path, output_dir):
-    """Generate organized pip freeze output and save to file"""
+    """Generate organized pip list output and save to file with timestamp"""
     freeze_info = {}
     
     try:
-        result = subprocess.run([str(python_path), "-m", "pip", "freeze"], 
+        # Use pip list instead of pip freeze for consistency with markdown
+        result = subprocess.run([str(python_path), "-m", "pip", "list"], 
                               capture_output=True, text=True, timeout=60)
         if result.returncode == 0:
-            freeze_content = result.stdout
+            # Parse pip list output (same logic as get_installed_packages_detailed)
+            lines = result.stdout.split('\n')[2:]  # Skip header
+            valid_packages = []
             
-            # Parse and organize requirements
-            valid_requirements = []
-            invalid_requirements = []
+            for line in lines:
+                if line.strip():
+                    parts = line.split()
+                    if len(parts) >= 2:
+                        name = parts[0]
+                        version = parts[1]
+                        # Format as package==version for requirements.txt compatibility
+                        valid_packages.append(f"{name}=={version}")
             
-            for line in freeze_content.split('\n'):
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
-                
-                # Check if it's a valid package==version format
-                if '==' in line and not line.startswith('git+') and not line.startswith('http'):
-                    # Basic validation - package name should be valid
-                    package_part = line.split('==')[0].strip()
-                    if package_part and package_part.replace('-', '').replace('_', '').replace('.', '').isalnum():
-                        valid_requirements.append(line)
-                    else:
-                        invalid_requirements.append(line)
-                else:
-                    invalid_requirements.append(line)
+            # Sort packages alphabetically
+            valid_packages.sort(key=lambda x: x.lower())
             
-            # Sort valid requirements alphabetically
-            valid_requirements.sort(key=lambda x: x.lower())
+            freeze_info['package_count'] = len(valid_packages)
             
-            freeze_info['package_count'] = len(valid_requirements)
+            # Generate filename with timestamp: requirements_(Day-HourMinute).txt
+            now = datetime.now()
+            timestamp = now.strftime("%d-%H%M")
+            freeze_file = Path(output_dir) / f"requirements_{timestamp}.txt"
             
-            # Save organized requirements to file
-            freeze_file = Path(output_dir) / "pip_freeze.txt"
             with open(freeze_file, 'w', encoding='utf-8') as f:
-                f.write(f"# Organized pip freeze output\n")
-                f.write(f"# Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                f.write(f"# Generated pip list output (requirements format)\n")
+                f.write(f"# Generated: {now.strftime('%Y-%m-%d %H:%M:%S')}\n")
                 f.write(f"# Python: {python_path}\n")
-                f.write(f"# Total valid packages: {len(valid_requirements)}\n\n")
+                f.write(f"# Total packages: {len(valid_packages)}\n\n")
                 
-                # Write valid requirements
-                for req in valid_requirements:
+                # Write all packages in requirements.txt format
+                for req in valid_packages:
                     f.write(f"{req}\n")
-                
-                # Add invalid/complex requirements as comments if any
-                if invalid_requirements:
-                    f.write(f"\n# Complex or invalid requirements (commented out):\n")
-                    for req in invalid_requirements:
-                        f.write(f"# {req}\n")
             
             freeze_info['file_path'] = str(freeze_file)
             freeze_info['success'] = True
