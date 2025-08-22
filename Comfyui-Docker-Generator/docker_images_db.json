@@ -1,0 +1,471 @@
+{
+  "docker_base_images": {
+    "python_official": {
+      "name": "Python Official",
+      "images": {
+        "python:3.13-slim": {
+          "description": "Latest Python 3.13 on Debian Bookworm (slim)",
+          "size": "~55MB",
+          "os": "debian",
+          "recommended": true,
+          "gpu_support": false,
+          "python_version": "3.13",
+          "release_date": "2024-10"
+        },
+        "python:3.12-slim": {
+          "description": "Python 3.12 on Debian Bookworm (slim)",
+          "size": "~50MB",
+          "os": "debian",
+          "recommended": true,
+          "gpu_support": false,
+          "python_version": "3.12"
+        },
+        "python:3.11-slim": {
+          "description": "Stable Python 3.11 on Debian Bookworm (slim)",
+          "size": "~50MB",
+          "os": "debian",
+          "recommended": true,
+          "gpu_support": false,
+          "python_version": "3.11"
+        },
+        "python:3.10-slim": {
+          "description": "Python 3.10 on Debian Bookworm (slim)",
+          "size": "~50MB",
+          "os": "debian", 
+          "recommended": false,
+          "gpu_support": false,
+          "python_version": "3.10"
+        },
+        "python:3.9-slim": {
+          "description": "Legacy Python 3.9 on Debian",
+          "size": "~50MB",
+          "os": "debian", 
+          "recommended": false,
+          "gpu_support": false,
+          "python_version": "3.9"
+        }
+      }
+    },
+    "nvidia_cuda": {
+      "name": "NVIDIA CUDA",
+      "images": {
+        "nvidia/cuda:13.0.0-devel-ubuntu24.04": {
+          "description": "Latest CUDA 13.0 development on Ubuntu 24.04 LTS",
+          "size": "~3GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "cuda_version": "13.0.0",
+          "cudnn_version": "9.x",
+          "architecture_support": "Turing, Ampere, Hopper, Ada Lovelace",
+          "release_date": "2024-12"
+        },
+        "nvidia/cuda:12.8.0-devel-ubuntu22.04": {
+          "description": "CUDA 12.8 development on Ubuntu 22.04 LTS",
+          "size": "~2.8GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "cuda_version": "12.8.0",
+          "cudnn_version": "8.x"
+        },
+        "nvidia/cuda:12.6.0-devel-ubuntu22.04": {
+          "description": "CUDA 12.6 development on Ubuntu 22.04",
+          "size": "~2.5GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "cuda_version": "12.6.0"
+        },
+        "nvidia/cuda:12.1-devel-ubuntu22.04": {
+          "description": "CUDA 12.1 development on Ubuntu 22.04",
+          "size": "~2GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "cuda_version": "12.1"
+        },
+        "nvidia/cuda:11.8-devel-ubuntu20.04": {
+          "description": "Legacy CUDA 11.8 development on Ubuntu 20.04", 
+          "size": "~2GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "cuda_version": "11.8"
+        },
+        "nvidia/cuda:13.0.0-runtime-ubuntu24.04": {
+          "description": "CUDA 13.0 runtime (smaller) on Ubuntu 24.04",
+          "size": "~1.8GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "cuda_version": "13.0.0",
+          "type": "runtime"
+        },
+        "nvidia/cuda:12.8.0-cudnn-devel-ubuntu22.04": {
+          "description": "CUDA 12.8 with cuDNN development libraries",
+          "size": "~4GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "cuda_version": "12.8.0",
+          "cudnn_version": "8.x",
+          "optimized_for": "deep_learning"
+        }
+      }
+    },
+    "pytorch_official": {
+      "name": "PyTorch Official",
+      "images": {
+        "pytorch/pytorch:2.8.0-cuda12.8-cudnn8-devel": {
+          "description": "Latest PyTorch 2.8.0 with CUDA 12.8 and cuDNN 8",
+          "size": "~6GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "pytorch_version": "2.8.0",
+          "cuda_version": "12.8",
+          "python_version": "3.11",
+          "release_date": "2025-01"
+        },
+        "pytorch/pytorch:2.7.0-cuda12.8-cudnn8-devel": {
+          "description": "PyTorch 2.7.0 with CUDA 12.8 and cuDNN 8",
+          "size": "~5.5GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "pytorch_version": "2.7.0",
+          "cuda_version": "12.8",
+          "python_version": "3.11"
+        },
+        "pytorch/pytorch:2.6.0-cuda12.6-cudnn8-devel": {
+          "description": "PyTorch 2.6.0 with CUDA 12.6 and cuDNN 8",
+          "size": "~5GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "pytorch_version": "2.6.0",
+          "cuda_version": "12.6",
+          "python_version": "3.11"
+        },
+        "pytorch/pytorch:2.1.0-cuda12.1-cudnn8-devel": {
+          "description": "Stable PyTorch 2.1.0 with CUDA 12.1 and cuDNN 8",
+          "size": "~4GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "pytorch_version": "2.1.0",
+          "cuda_version": "12.1",
+          "python_version": "3.10"
+        },
+        "pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel": {
+          "description": "Legacy PyTorch 2.0.1 with CUDA 11.7 and cuDNN 8",
+          "size": "~4GB", 
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "pytorch_version": "2.0.1",
+          "cuda_version": "11.7",
+          "python_version": "3.10"
+        }
+      }
+    },
+    "tensorflow_official": {
+      "name": "TensorFlow Official",
+      "images": {
+        "tensorflow/tensorflow:2.18.0-gpu": {
+          "description": "Latest TensorFlow 2.18.0 with GPU support",
+          "size": "~4GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "tensorflow_version": "2.18.0",
+          "cuda_version": "12.6",
+          "python_version": "3.11"
+        },
+        "tensorflow/tensorflow:2.17.0-gpu": {
+          "description": "TensorFlow 2.17.0 with GPU support",
+          "size": "~3.8GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "tensorflow_version": "2.17.0",
+          "cuda_version": "12.3",
+          "python_version": "3.11"
+        },
+        "tensorflow/tensorflow:2.18.0": {
+          "description": "TensorFlow 2.18.0 CPU-only",
+          "size": "~1.5GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": false,
+          "tensorflow_version": "2.18.0",
+          "python_version": "3.11"
+        }
+      }
+    },
+    "nvidia_ngc": {
+      "name": "NVIDIA NGC Containers",
+      "images": {
+        "nvcr.io/nvidia/pytorch:25.01-py3": {
+          "description": "NVIDIA optimized PyTorch (January 2025)",
+          "size": "~8GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "pytorch_version": "2.8.0",
+          "cuda_version": "13.0",
+          "python_version": "3.11",
+          "optimizations": "NVIDIA optimized",
+          "release_date": "2025-01"
+        },
+        "nvcr.io/nvidia/tensorflow:24.12-tf2-py3": {
+          "description": "NVIDIA optimized TensorFlow (December 2024)",
+          "size": "~7GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "tensorflow_version": "2.18.0",
+          "cuda_version": "12.8",
+          "python_version": "3.11",
+          "optimizations": "NVIDIA optimized"
+        },
+        "nvcr.io/nvidia/tritonserver:25.01-py3": {
+          "description": "NVIDIA Triton Inference Server (January 2025)",
+          "size": "~10GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": true,
+          "specialized": "inference_server",
+          "cuda_version": "13.0"
+        }
+      }
+    },
+    "custom_ml": {
+      "name": "Community ML Images",
+      "images": {
+        "anibali/pytorch:2.8.0-cuda12.8-ubuntu22.04": {
+          "description": "Community PyTorch with Python 3.12 support",
+          "size": "~4GB",
+          "os": "ubuntu",
+          "recommended": true,
+          "gpu_support": true,
+          "pytorch_version": "2.8.0",
+          "cuda_version": "12.8",
+          "python_version": "3.12",
+          "maintainer": "anibali"
+        },
+        "jupyter/tensorflow-notebook:latest": {
+          "description": "Jupyter with TensorFlow and scientific Python stack",
+          "size": "~3GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": false,
+          "includes": "jupyter, tensorflow, scipy-stack"
+        },
+        "jupyter/pytorch-notebook:latest": {
+          "description": "Jupyter with PyTorch and scientific Python stack",
+          "size": "~3GB",
+          "os": "ubuntu",
+          "recommended": false,
+          "gpu_support": false,
+          "includes": "jupyter, pytorch, scipy-stack"
+        }
+      }
+    }
+  },
+  "linux_distros": {
+    "ubuntu": {
+      "versions": {
+        "22.04": {
+          "codename": "jammy",
+          "lts": true,
+          "recommended": true,
+          "end_of_life": "2027-04"
+        },
+        "20.04": {
+          "codename": "focal", 
+          "lts": true,
+          "recommended": false,
+          "end_of_life": "2025-04"
+        }
+      },
+      "package_manager": "apt",
+      "base_packages": ["curl", "wget", "git", "build-essential", "python3-dev"]
+    },
+    "debian": {
+      "versions": {
+        "12": {
+          "codename": "bookworm",
+          "stable": true,
+          "recommended": true,
+          "end_of_life": "2028-06"
+        },
+        "11": {
+          "codename": "bullseye",
+          "stable": true, 
+          "recommended": false,
+          "end_of_life": "2026-08"
+        }
+      },
+      "package_manager": "apt",
+      "base_packages": ["curl", "wget", "git", "build-essential", "python3-dev"]
+    }
+  },
+  "useful_links": {
+    "documentation": {
+      "docker_best_practices": "https://docs.docker.com/develop/dev-best-practices/",
+      "python_docker_guide": "https://docs.python.org/3/using/docker.html",
+      "comfyui_github": "https://github.com/comfyanonymous/ComfyUI",
+      "nvidia_docker": "https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html",
+      "nvidia_support_matrix": "https://docs.nvidia.com/deeplearning/frameworks/support-matrix/index.html",
+      "cuda_compatibility": "https://docs.nvidia.com/deploy/cuda-compatibility/index.html",
+      "tensorrt_release_notes": "https://docs.nvidia.com/deeplearning/tensorrt/container-release-notes/index.html"
+    },
+    "base_image_repos": {
+      "python_official": "https://hub.docker.com/_/python",
+      "python_tags": "https://hub.docker.com/_/python/tags",
+      "nvidia_cuda": "https://hub.docker.com/r/nvidia/cuda",
+      "nvidia_cuda_tags": "https://hub.docker.com/r/nvidia/cuda/tags",
+      "pytorch_official": "https://hub.docker.com/r/pytorch/pytorch",
+      "pytorch_tags": "https://hub.docker.com/r/pytorch/pytorch/tags",
+      "tensorflow_official": "https://hub.docker.com/r/tensorflow/tensorflow",
+      "tensorflow_tags": "https://hub.docker.com/r/tensorflow/tensorflow/tags",
+      "nvidia_ngc": "https://catalog.ngc.nvidia.com/",
+      "ubuntu_official": "https://hub.docker.com/_/ubuntu",
+      "debian_official": "https://hub.docker.com/_/debian"
+    },
+    "package_indices": {
+      "pypi": "https://pypi.org/",
+      "conda_forge": "https://conda-forge.org/",
+      "nvidia_pytorch": "https://developer.nvidia.com/deep-learning-frameworks",
+      "pytorch_releases": "https://pytorch.org/get-started/previous-versions/",
+      "tensorflow_releases": "https://github.com/tensorflow/tensorflow/releases",
+      "cuda_releases": "https://developer.nvidia.com/cuda-toolkit-archive"
+    },
+    "version_checking": {
+      "docker_hub_api": "https://hub.docker.com/v2/repositories/",
+      "pytorch_version_check": "https://download.pytorch.org/whl/torch_stable.html",
+      "tensorflow_version_check": "https://pypi.org/project/tensorflow/#history",
+      "cuda_version_check": "https://developer.nvidia.com/cuda-toolkit",
+      "python_version_check": "https://www.python.org/downloads/"
+    }
+  },
+  "image_selection_criteria": {
+    "cpu_only": {
+      "recommended_base": "python:3.12-slim",
+      "alternative": "python:3.11-slim",
+      "reasoning": "Lightweight, fast startup, sufficient for CPU workloads, latest stable Python"
+    },
+    "gpu_required": {
+      "recommended_base": "nvidia/cuda:13.0.0-devel-ubuntu24.04",
+      "alternative": "nvidia/cuda:12.8.0-devel-ubuntu22.04", 
+      "reasoning": "Latest CUDA 13.0 support with newest GPU architectures, development tools included"
+    },
+    "pytorch_optimized": {
+      "recommended_base": "pytorch/pytorch:2.8.0-cuda12.8-cudnn8-devel",
+      "alternative": "nvcr.io/nvidia/pytorch:25.01-py3",
+      "reasoning": "Latest PyTorch with optimized CUDA/cuDNN, NVIDIA NGC for maximum performance"
+    },
+    "tensorflow_optimized": {
+      "recommended_base": "tensorflow/tensorflow:2.18.0-gpu",
+      "alternative": "nvcr.io/nvidia/tensorflow:24.12-tf2-py3",
+      "reasoning": "Latest TensorFlow with GPU support, NVIDIA optimized version available"
+    },
+    "bleeding_edge": {
+      "recommended_base": "nvcr.io/nvidia/pytorch:25.01-py3",
+      "reasoning": "Cutting-edge NVIDIA optimized containers with latest versions and performance optimizations"
+    },
+    "stable_production": {
+      "recommended_base": "pytorch/pytorch:2.7.0-cuda12.8-cudnn8-devel",
+      "reasoning": "Battle-tested stable versions for production workloads"
+    }
+  },
+  "compatibility_matrix": {
+    "cuda_versions": {
+      "13.0.0": {
+        "gpu_architectures": ["Turing", "Ampere", "Hopper", "Ada Lovelace"],
+        "driver_requirement": ">=570.26 (Linux), >=570.65 (Windows)",
+        "python_support": ["3.9", "3.10", "3.11", "3.12", "3.13"],
+        "status": "latest",
+        "release_date": "2024-12"
+      },
+      "12.8.0": {
+        "gpu_architectures": ["Turing", "Ampere", "Hopper", "Ada Lovelace"],
+        "driver_requirement": ">=565.0",
+        "python_support": ["3.9", "3.10", "3.11", "3.12"],
+        "status": "stable",
+        "pytorch_support": "2.8.0, 2.7.0"
+      },
+      "12.6.0": {
+        "gpu_architectures": ["Turing", "Ampere", "Hopper"],
+        "driver_requirement": ">=560.0",
+        "python_support": ["3.9", "3.10", "3.11"],
+        "status": "legacy_stable"
+      },
+      "12.1.0": {
+        "gpu_architectures": ["Turing", "Ampere", "Hopper"],
+        "driver_requirement": ">=530.0",
+        "python_support": ["3.8", "3.9", "3.10", "3.11"],
+        "status": "legacy"
+      },
+      "11.8.0": {
+        "gpu_architectures": ["Turing", "Ampere"],
+        "driver_requirement": ">=520.0",
+        "python_support": ["3.8", "3.9", "3.10"],
+        "status": "legacy"
+      }
+    },
+    "pytorch_versions": {
+      "2.8.0": {
+        "cuda_support": ["12.8", "12.6"],
+        "python_support": ["3.9", "3.10", "3.11", "3.12", "3.13"],
+        "release_date": "2025-01",
+        "status": "latest"
+      },
+      "2.7.0": {
+        "cuda_support": ["12.8", "12.6", "12.1"],
+        "python_support": ["3.9", "3.10", "3.11", "3.12"],
+        "status": "stable"
+      },
+      "2.6.0": {
+        "cuda_support": ["12.6", "12.1", "11.8"],
+        "python_support": ["3.9", "3.10", "3.11"],
+        "status": "legacy_stable"
+      },
+      "2.1.0": {
+        "cuda_support": ["12.1", "11.8"],
+        "python_support": ["3.8", "3.9", "3.10", "3.11"],
+        "status": "legacy"
+      }
+    },
+    "python_versions": {
+      "3.13": {
+        "pytorch_support": ["2.8.0"],
+        "tensorflow_support": ["2.18.0"],
+        "status": "latest"
+      },
+      "3.12": {
+        "pytorch_support": ["2.8.0", "2.7.0"],
+        "tensorflow_support": ["2.18.0", "2.17.0"],
+        "status": "stable"
+      },
+      "3.11": {
+        "pytorch_support": ["2.8.0", "2.7.0", "2.6.0", "2.1.0"],
+        "tensorflow_support": ["2.18.0", "2.17.0"],
+        "status": "stable",
+        "recommended": true
+      },
+      "3.10": {
+        "pytorch_support": ["2.7.0", "2.6.0", "2.1.0"],
+        "tensorflow_support": ["2.17.0"],
+        "status": "stable"
+      },
+      "3.9": {
+        "pytorch_support": ["2.6.0", "2.1.0"],
+        "tensorflow_support": ["2.17.0"],
+        "status": "legacy"
+      }
+    }
+  }
+}
