@@ -1,3 +1,4 @@
 
-reports/22-0335/requirements_22-0335.txt
-reports/22-0335/Report_Comfy_22-0335.md
+reports/
+Comfyui-Docker-Generator/logs
+Comfyui-Docker-Generator/docker_build_*/
